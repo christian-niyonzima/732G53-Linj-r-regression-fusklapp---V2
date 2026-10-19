@@ -40,7 +40,11 @@
 
 % ---------- utseende ----------
 \pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
-\newcommand{\pagelabel}{\ifcase\value{page}\or GRUNDER \& RÄKNA FÖR HAND\or INFERENS \& TOLKNING\or DIAGNOSTIK \& MODELLVAL\or TENTASTRATEGI, SANT/FALSKT \& TEORISVAR\fi}
+\newcommand{\pagelabel}{\ifcase\value{page}\or
+  GRUNDER \& RÄKNA FÖR HAND (§1–8): index · verktyg · modell/antaganden · residualmönster · enkel regression · räknarknep · genomräknat exempel\or
+  INFERENS \& TOLKNING (§9–19): OLS-teori · hypotesprövning · tolkningsmallar · matrisform · ANOVA · F-test · partiellt F · t-test · prediktion · simultan inferens · R²\or
+  MODELLBYGGE \& DIAGNOSTIK (§20–26): indikatorer · interaktioner · polynom · inflytelserika obs. · multikollinearitet · confounding · modellval\or
+  VÄLJ MODELL, SANT/FALSKT \& TENTATIPS (§27–34): välj/utvärdera modell · sant/falskt · GLM · teorisvar · tentatips · vanliga fel · tabellsamlingen\fi}
 \newcommand{\tsq}[1]{\textcolor{#1}{\rule{5pt}{5pt}}}% temafärgad ruta (sidhuvud, register)
 \fancyhead[L]{\fontsize{6.5}{7}\selectfont\sffamily\textcolor{hd}{\textbf{732G53 fusklapp}}\quad\textbf{Sida \thepage/4:} \pagelabel}
 \fancyhead[R]{\fontsize{6}{7}\selectfont\sffamily
