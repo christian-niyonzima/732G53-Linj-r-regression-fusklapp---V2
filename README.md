@@ -25,14 +25,34 @@ dubbelsidigt. Kontrollera reglerna på omslaget till just din tenta.
 - Facit från tidigare tentor (2024-10-25, 2025-02-28) för att kontrollera räknartekniken.
 - Ingen R-kod; läsning av R-utskrifter (koefficient- och ANOVA-tabeller) finns kvar.
 
+### Tillägg och finputs (V2.1)
+
+- **Snabbformel för KI/PI när tentan ger c** (§17): c = x₀'(X'X)⁻¹x₀ ⇒ KI ŷ ± t·√(MSE·c),
+  PI ŷ ± t·√(MSE·(1+c)). Enkel regression: c = 1/n + (x₀ − x̄)²/Sxx. Sjukhusexemplet
+  (c = 0.93): 15892 ± 1183 = [14709; 17075], så 17207 ligger utanför och sjukhuset ifrågasätts.
+  Formeln finns även i verktygstabellen (§2).
+- **AICc, PRESS och K-faldig korsvalidering** i måtttabellen (§26):
+  AICc = AIC + 2(k+1)(k+2)/(n−k−2) (litet n), PRESS = Σ(eᵢ/(1−hᵢᵢ))² (lågt = bra prediktion,
+  alltid ≥ SSE), CV = (1/K)·Σ MSEₖ (K = n ger PRESS/n).
+- **För- och nackdelar** med best subsets, framåtval, bakåteliminering och stegvis regression (§26).
+- **Muskelmasseuppgiften** (n = 60) som extra räkneövning med facit (§8): b₁ = −1.190,
+  b₀ = 156.35, 95 % KI för β₁ = [−1.371; −1.009], PI vid x = 65: [62.5; 95.5].
+- **Alternativa räkneformler** (§6): SSE = Σy² − b₀Σy − b₁Σxy och
+  r = (Σxy − n·x̄ȳ)/√((Σx² − n·x̄²)(Σy² − n·ȳ²)), med varning för avrundning
+  (2024-10-25: b med 3 decimaler ger SSE = 192.948 i stället för 191.702).
+- Finputs: vektortypsnitt för kod (inget suddigt bitmappstypsnitt), smalare rubrikband,
+  4 % tätare radavstånd, ”forts.”-markering överst vid varje sidbyte och sidhuvuden med rätt
+  §-intervall. Dubbletter är ersatta med hänvisningar (Simpson och polynom → §31,
+  KI- eller PI-regeln → §2). ”Kontrollera din räknarteknik” har större text.
+
 ## Innehåll
 
 | Sida | Sidhuvud och avsnitt |
 |---|---|
 | 1 | GRUNDER & RÄKNA FÖR HAND (§1–8): index · verktyg · modell/antaganden · residualmönster · enkel regression · räknarknep · genomräknat exempel |
-| 2 | INFERENS & TOLKNING (§9–19): OLS-teori · hypotesprövning · tolkningsmallar · matrisform · ANOVA · F-test · partiellt F · t-test · prediktion · simultan inferens · R² |
-| 3 | MODELLBYGGE & DIAGNOSTIK (§20–26): indikatorer · interaktioner · polynom · inflytelserika obs. · multikollinearitet · confounding · modellval |
-| 4 | VÄLJ MODELL, SANT/FALSKT & TENTATIPS (§27–34): välj/utvärdera modell · sant/falskt · GLM · teorisvar · tentatips · vanliga fel · tabellsamlingen |
+| 2 | INFERENS & TOLKNING (§8 forts.–18): OLS-teori · hypotesprövning · tolkningsmallar · matrisform · ANOVA · F-test · partiellt F · t-test · prediktion med c · simultan inferens |
+| 3 | MODELLBYGGE & DIAGNOSTIK (§18 forts.–26): R² · indikatorer · interaktioner · polynom · inflytelserika obs. · multikollinearitet · confounding · modellval (AICc, PRESS, CV) |
+| 4 | VÄLJ MODELL, SANT/FALSKT & TENTATIPS (§26 forts.–34): algoritmer för/nackdelar · välj/utvärdera modell · sant/falskt · GLM · teorisvar · tentatips · vanliga fel · tabeller |
 
 ## Källor
 
@@ -63,8 +83,12 @@ pdflatex fusklapp_732G53.tex   # andra körningen fyller i §- och sidhänvisnin
 
 Fungerar även direkt i Overleaf. Paket som används: `extarticle`, `geometry`,
 `fancyhdr`, `babel` (swedish), `mathptmx`, `helvet`, `amsmath`, `multicol`, `xcolor`,
-`enumitem`, `booktabs`, `tabularx`, `tikz`, `newunicodechar`, `pifont`, `microtype`
-(alla ingår i TeX Live).
+`enumitem`, `booktabs`, `tabularx`, `tikz`, `newunicodechar`, `pifont`, `microtype`,
+samt typsnittet Latin Modern Typewriter (`lmodern`) för kod (allt ingår i TeX Live).
+
+Sidbytena är handjusterade med `\columnbreak` (sök på ”sidbyte” i källan). Ändrar du
+innehållet före ett sidbyte: kompilera, kontrollera att det fortfarande blir exakt 4 sidor
+och flytta vid behov `\columnbreak` med sin ”forts.”-markering.
 
 ## Utskrift
 
