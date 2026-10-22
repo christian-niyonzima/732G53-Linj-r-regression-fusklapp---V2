@@ -1,7 +1,7 @@
 # 732G53 Linjär regression – fusklapp inför tentan (V2)
 
 Fusklapp i LaTeX för tentan i 732G53 (regressionsanalys). Tentaomslagen
-(2024-10-25 till 2025-10-23) tillåter **två A4-blad, dubbelsidigt, dator- eller
+(2024-10-25 till 2025-12-08) tillåter **två A4-blad, dubbelsidigt, dator- eller
 handskrivna**. Fusklappen är därför exakt **4 sidor A4 liggande** = 2 blad
 dubbelsidigt. Kontrollera reglerna på omslaget till just din tenta.
 
@@ -11,7 +11,7 @@ dubbelsidigt. Kontrollera reglerna på omslaget till just din tenta.
 ## Nytt i V2
 
 - Tabellsamlingen delas ut på tentan ⇒ t-, F- och χ²-tabellerna är borttagna. Kvar finns
-  en läsguide för tabellsamlingen och normalkvantiler för QQ-plot för hand (§34).
+  en läsguide för tabellsamlingen och normalkvantiler för QQ-plot för hand (§33).
 - Sidhuvud på varje sida med sidetikett och §-intervall, plus färglegend.
 - Färgkodade teman (Grund, Räkna, Inferens, Modellbygge, Diagnostik, Tenta) i
   avsnittsrubriker, register och sidhuvud.
@@ -49,14 +49,39 @@ dubbelsidigt. Kontrollera reglerna på omslaget till just din tenta.
   §-intervall. Dubbletter är ersatta med hänvisningar (Simpson och polynom → §31,
   KI- eller PI-regeln → §2). ”Kontrollera din räknarteknik” har större text.
 
+### Genomgång av tentorna 2024-10-25 – 2025-12-08 (V2.2)
+
+Alla fem tentor med lösningsförslag och fyra rättade, handskrivna tentor är genomgångna.
+De två senaste (2025-10-23 och 2025-12-08, samma lärare) har samma upplägg: uppgift 1 är
+enkel regression för hand (13–15p), uppgift 2 är modellval (5–7p); inget sant/falskt.
+
+- **§10 följer lärarens 7 steg** (1 kontrollera antaganden, 2 hypoteser, 3 signifikansnivå,
+  4 teststatistika, 5 kritiskt område, 6 uträkning, 7 beslut och tolkning) och översätter
+  lösningsförslagens notation: t_{ν,α} = övre α-punkt (t_{4,0.1} = 1.533 = vår t_{4;0.90}),
+  S_{Y|X} = s, S_X² = Sxx/(n−1), S_{β̂1} = S_{Y|X}/(S_X√(n−1)).
+- **§3: ny figurrad** med ✓/✗-figurer för Y mot X (linjärt/krökt) och e mot i
+  (oberoende/beroende). ”Redovisa visuellt hur det ser ut när antagandena är uppfyllda mot
+  ej uppfyllda” gav 3p 2025-12-08.
+- **§8:** d) följer lösningsförslaget (e mot i, e mot ŷ, QQ med pᵢ = (i − 0.5)/n, histogram).
+  ”Kontrollera din räknarteknik” har nu 2025-12-08 uppg. 1 med exakta värden. Lösningsförslaget
+  avrundade b₁ till 3.6, vilket ger ŷ(85) = 64.5 i stället för 60.42 och SSR + SSE ≠ SSY.
+- **§22:** 2025-12-08 uppg. 2 (centrerade polynom): partiellt F = 15.22, tolkning och
+  prediktion med centrerade värden (ŷ = 19.91).
+- **§27:** för- och nackdelar för de fyra modellerna 2025-12-08.
+- **§31 Tentatips:** tentaformatet 2025, en mall för uppgift 1 (a–g) och lärdomar från de
+  rättade tentorna (överhoppade deluppgifter gav G; slutsatsen måste stämma med beslutet).
+- **Borttaget för att få plats:** de egna ”fler troliga” sant/falskt-påståendena (allt står i
+  avsnitten), utblicken om logistisk regression (har aldrig kommit på tentan) och en
+  förkortad teoridel (§9). Sant/falskt-påståendena från tentorna finns kvar (§29).
+
 ## Innehåll
 
 | Sida | Sidhuvud och avsnitt |
 |---|---|
 | 1 | GRUNDER & RÄKNA FÖR HAND (§1–8): index · verktyg · modell/antaganden · residualmönster · enkel regression · räknarknep · genomräknat exempel |
-| 2 | INFERENS & TOLKNING (§8 forts.–18): OLS-teori · hypotesprövning · tolkningsmallar · matrisform · ANOVA · F-test · partiellt F · t-test · prediktion med c · simultan inferens |
-| 3 | MODELLBYGGE & DIAGNOSTIK (§18 forts.–26): R² · indikatorer · interaktioner · polynom · inflytelserika obs. · multikollinearitet · confounding · modellval (AICc, PRESS, CV) |
-| 4 | VÄLJ MODELL, SANT/FALSKT & TENTATIPS (§26 forts.–34): algoritmer för/nackdelar · välj/utvärdera modell · sant/falskt · GLM · teorisvar · tentatips · vanliga fel · tabeller |
+| 2 | INFERENS & TOLKNING (§8 forts.–17): OLS-teori · hypotesprövning · tolkningsmallar · matrisform · ANOVA · F-test · partiellt F · t-test · prediktion med c |
+| 3 | MODELLBYGGE & DIAGNOSTIK (§17 forts.–25): simultan inferens · R² · indikatorer · interaktioner · polynom · inflytelserika obs. · multikollinearitet · confounding |
+| 4 | MODELLVAL, TENTAFORMAT & TIPS (§26–33): AIC(c)/PRESS/CV · algoritmer · välj/utvärdera modell · sant/falskt · teorisvar · tentatips · vanliga fel · tabeller |
 
 ## Källor
 
@@ -64,8 +89,8 @@ dubbelsidigt. Kontrollera reglerna på omslaget till just din tenta.
   (<https://hietalai.github.io/statistics-in-r/01-regression/00-intro-regression.html>,
   källkod i repot `hietalai/statistics-in-r`, kapitel 1–11), särskilt kap. 6
   (polynom och interaktioner).
-- Tentor med lösningsförslag 2024-10-25, 2025-01-20, 2025-02-28 samt tentan 2025-10-23.
-  Lösningarna till 2025-10-23 är egna uträkningar (inget officiellt lösningsförslag).
+- Tentor med lösningsförslag 2024-10-25, 2025-01-20, 2025-02-28, 2025-10-23 och 2025-12-08,
+  samt rättade, handskrivna tentor från samma tillfällen.
 - Exempel på det nya svarsbladet (numeriska svar med tre decimaler i rutor, flervalsfrågor).
 - Normalkvantilerna för QQ-plot, z((i − 0,5)/n), är kontrollerade numeriskt.
 
@@ -74,6 +99,10 @@ Några tryckfel i underlagen är rättade på fusklappen:
 - Jackknife-residualen har roten över hela kvoten (som i kurssidans R-kod).
 - s² i enkel regression är SSE/(n − 2). Lösningsförslaget 2024-10-25 skriver n − 1,
   men svaret 21.3 bygger på n − 2.
+- 2025-12-08 uppg. 1 räknas med exakta värden (b₁ = 3.554, b₀ = −241.639, SSE = 3539.39);
+  lösningsförslaget avrundade b₁ till 3.6 och fick därför ŷ(85) = 64.5 och SSR + SSE ≠ SSY.
+- 2025-12-08 uppg. 2: TempC² > 0 betyder att temperatureffekten blir starkare ju varmare
+  (lösningsförslaget skriver att den avtar).
 - Working–Hotelling anges som på kurssidan, W² = 2·F(p, n − p) (enkel regression
   W² = 2·F(2, n − 2)); Kutner anger W² = p·F(p, n − p), vilket ger samma värde för p = 2.
   Scheffé anges som S² = g·F(g, n − p).

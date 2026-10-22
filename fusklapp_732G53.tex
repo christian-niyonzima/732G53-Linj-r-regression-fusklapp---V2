@@ -43,9 +43,9 @@
 \pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
 \newcommand{\pagelabel}{\ifcase\value{page}\or
   GRUNDER \& RÄKNA FÖR HAND (§1–8): index · verktyg · modell/antaganden · residualmönster · enkel regression · räknarknep · genomräknat exempel\or
-  INFERENS \& TOLKNING (§8 forts.–18): OLS-teori · hypotesprövning · tolkningsmallar · matrisform · ANOVA · F-test · partiellt F · t-test · prediktion med $c$ · simultan inferens\or
-  MODELLBYGGE \& DIAGNOSTIK (§18 forts.–26): R² · indikatorer · interaktioner · polynom · inflytelserika obs. · multikollinearitet · confounding · modellval (AICc, PRESS, CV)\or
-  VÄLJ MODELL, SANT/FALSKT \& TENTATIPS (§26 forts.–34): algoritmer för/nackdelar · välj/utvärdera modell · sant/falskt · GLM · teorisvar · tentatips · vanliga fel · tabeller\fi}
+  INFERENS \& TOLKNING (§8 forts.–17): OLS-teori · hypotesprövning · tolkningsmallar · matrisform · ANOVA · F-test · partiellt F · t-test · prediktion med $c$\or
+  MODELLBYGGE \& DIAGNOSTIK (§17 forts.–25): simultan inferens · R² · indikatorer · interaktioner · polynom · inflytelserika obs. · multikollinearitet · confounding\or
+  MODELLVAL, TENTAFORMAT \& TIPS (§26–33): AIC(c)/PRESS/CV · algoritmer · välj/utvärdera modell · sant/falskt · teorisvar · tentatips · vanliga fel · tabeller\fi}
 \newcommand{\tsq}[1]{\textcolor{#1}{\rule{5pt}{5pt}}}% temafärgad ruta (sidhuvud, register)
 \fancyhead[L]{\fontsize{6.5}{7}\selectfont\sffamily\textcolor{hd}{\textbf{732G53 fusklapp}}\quad\textbf{Sida \thepage/4:} \pagelabel}
 \fancyhead[R]{\fontsize{6}{7}\selectfont\sffamily
@@ -84,6 +84,7 @@
 % inga negativa straff vid listor/miljöer => kolumnerna fylls jämnt med \raggedcolumns
 \@beginparpenalty=0 \@endparpenalty=0 \@itempenalty=0
 \makeatother
+\newcommand{\sidbyte}{\columnbreak}% handjusterat sidbyte (med ”forts.”-markering efter)
 \newcommand{\sub}[1]{{\color{hd}\sffamily\bfseries #1}\enspace}
 \newcommand{\ex}{{\color{ex}\sffamily\bfseries Ex.}\ }
 \newcommand{\obs}{{\color{BrickRed}\sffamily\bfseries OBS!}\ }
@@ -117,7 +118,7 @@
 
 \noindent{\color{hd}\sffamily\bfseries\large 732G53 Linjär regression – fusklapp}\hfill
 {\footnotesize \textbf{Notation:} $n$ = antal obs., $k$ = antal förklarande variabler (lutningsparametrar), $p=k+1$ = antal parametrar, $df_E=n-(k+1)$.\quad
-Källor: hietalai.github.io/statistics-in-r (Del II) och tentor 2024-10-25 – 2025-10-23.}
+Källor: hietalai.github.io/statistics-in-r (Del II) och tentor med lösningsförslag 2024-10-25 – 2025-12-08.}
 
 \begin{multicols*}{3}
 \raggedcolumns
@@ -129,7 +130,6 @@ Källor: hietalai.github.io/statistics-in-r (Del II) och tentor 2024-10-25 – 2
 \tsq{cRakna} & $b_0$, $b_1$, ANOVA, test, KI/PI för hand (enkel regression) & §\ref{sec:slr} (s.\pageref{sec:slr}), §\ref{sec:ex} (s.\pageref{sec:ex})\\
 \tsq{cGrund} & Ange/kontrollera antagandena, tolka residualdiagram/QQ-plot & §\ref{sec:modell} (s.\pageref{sec:modell}), §\ref{sec:monster} (s.\pageref{sec:monster})\\
 \tsq{cGrund} & Rita/tolka spridningsdiagram, korrelationsmatris & §\ref{sec:utforska} (s.\pageref{sec:utforska})\\
-\tsq{cGrund} & OLS-egenskaper, normalekvationer & §\ref{sec:teori} (s.\pageref{sec:teori})\\
 \tsq{cInfer} & Hypotesprövningens steg, $p$-värde & §\ref{sec:test} (s.\pageref{sec:test})\\
 \tsq{cGrund} & Tolka koefficient, $R^2$, intervall & §\ref{sec:tolk} (s.\pageref{sec:tolk})\\
 \tsq{cBygg} & Tolka och testa indikator, interaktion & §\ref{sec:dummy} (s.\pageref{sec:dummy}), §\ref{sec:inter} (s.\pageref{sec:inter})\\
@@ -232,6 +232,28 @@ Litet $n$ (t.ex.\ 6): svårt att bedöma – skriv det. \emph{Formulering:} ”R
   \miniram{Histogram: två toppar\\(grupper)}
   \foreach \h [count=\i] in {0.12,0.42,0.62,0.30,0.16,0.40,0.66,0.36,0.10}{\filldraw[fill=hd!55,draw=hd] ({0.125+0.15*(\i-1)},-0.42) rectangle ++(0.15,\h);}
 \end{scope}
+\end{tikzpicture}
+\\[1pt]
+\begin{tikzpicture}[x=\figunit,y=\figunit]
+\pgfmathsetseed{3}
+\begin{scope}
+  \miniram{$Y$ mot $X$: linjärt ✓}
+  \foreach \i in {1,...,30}{\pgfmathsetmacro\xx{0.1+1.4*rnd}\pgfmathsetmacro\yy{-0.33+0.47*(\xx-0.1)+0.08*rand}\fill[hd] (\xx,\yy) circle (0.55pt);}
+\end{scope}
+\begin{scope}[xshift=1.72\figunit]
+  \miniram{$Y$ mot $X$: krökt ✗}
+  \foreach \i in {1,...,30}{\pgfmathsetmacro\xx{0.1+1.4*rnd}\pgfmathsetmacro\yy{-0.38+0.78*((\xx-0.1)/1.4)^2+0.05*rand}\fill[hd] (\xx,\yy) circle (0.55pt);}
+\end{scope}
+\begin{scope}[xshift=3.44\figunit]
+  \miniram{$e$ mot $i$: slump ✓\\(oberoende)}\draw[gray] (0,0)--(1.6,0);
+  \draw[hd,mark=*,mark size=0.55pt] plot coordinates {(0.12,0.18) (0.225,-0.22) (0.33,0.05) (0.435,0.30) (0.54,-0.12) (0.645,-0.30) (0.75,0.15) (0.855,-0.05) (0.96,0.25) (1.065,-0.20) (1.17,0.08) (1.275,-0.28) (1.38,0.20) (1.485,-0.08)};
+\end{scope}
+\begin{scope}[xshift=5.16\figunit]
+  \miniram{$e$ mot $i$: våg/trend ✗\\(beroende, t.ex.\ tidsserie)}\draw[gray] (0,0)--(1.6,0);
+  \draw[hd,mark=*,mark size=0.55pt] plot[samples at={1,...,14}] ({0.12+0.105*(\x-1)},{0.32*sin(30*\x)+0.03*cos(170*\x)});
+\end{scope}
+\node[font=\fontsize{5}{6}\selectfont\sffamily,text width=1.55\figunit,align=left,anchor=west] at (6.9,0.05)
+  {Tentan: rita en ✓- och en ✗-figur per antagande (”redovisa visuellt”, 3p 2025-12-08).};
 \end{tikzpicture}
 \end{figrad}
 
@@ -338,9 +360,8 @@ $S_{xx}=158\,396-954^2/6=6710$;\; $S_{yy}=86\,978\,170$;\; $S_{xy}=18\,433\,163-
 \textbf{b)} $b_1=730\,739/6710=108.903$;\; $b_0=18\,556-108.90298\cdot159=1240.426$\\
 ⇒ $\hat y=1240.426+108.903\,x$. \emph{Tolkning:} varje extra m$^2$ ger i genomsnitt ca 109 kr/år högre elkostnad. $b_0$ tolkas ej ($x=0$ ligger utanför data).
 $\SSR=b_1S_{xy}=79\,579\,655$, $\SSE=7\,398\,515$, $\MSE=\SSE/4=1\,849\,629$, $s=1360.0$, $R^2=0.915$ ($r=0.957$): 91.5\,\% av variationen i elkostnad förklaras av boendeytan.\\
-\textbf{c)} Antagandena och hur de kontrolleras: §\ref{sec:modell}.\\
-\textbf{d)} $e$ mot $\hat y$: inget tydligt mönster, men $n=6$ gör bedömningen osäker. QQ-plot: normalkvantilerna $\pm0.21,\pm0.67,\pm1.38$ (tabell §\ref{sec:tab}) mot sorterade $e$. Obs.\ 6 ($e=-2188$, $e/s=-1.61$, jackknife $-3.9$) avviker; $|\text{DFFITS}|=2.12>1$ (eget värde), Cook $0.49<1$. Obs.\ 4 ($x=99$): $h=0.70>2p/n=0.67$, DFFITS $2.13>1$, Cook $1.85>1$ ⇒ inflytelserik.\par\columnbreak% sidbyte 1→2 här
-\sub{§\ref{sec:ex} forts.}\emph{d) Slutsats:} linjäritet/lika varians: inget mönster, osäkert ($n=6$); normalfördelning: QQ ≈ linjen utom obs.\ 6; oberoende: rimligt (slumpmässigt urval).\\
+\textbf{c)} Antagandena och hur de kontrolleras: §\ref{sec:modell}.\par\sidbyte% sidbyte 1→2 här
+\sub{§\ref{sec:ex} forts.}\textbf{d)} Rita $e$ mot $i$ (oberoende), $e$ mot $\hat y$ (lika varians), QQ-plot (sorterade $e$ mot $z=\pm0.21,\pm0.67,\pm1.38$, $p_i=(i-0.5)/n$, §\ref{sec:tab}) och histogram. Extra: obs.\ 4 ($x=99$): $h=0.70>2p/n=0.67$, Cook $1.85>1$ ⇒ inflytelserik; obs.\ 6 har störst residual ($e=-2188$). \emph{Slutsats:} linjäritet/lika varians: inget mönster, osäkert ($n=6$); normalfördelning: QQ ≈ linjen utom obs.\ 6; oberoende: rimligt (slumpmässigt urval).\\
 \textbf{e)} $H_0{:}\ \beta_1\le0$ (=0) mot $H_a{:}\ \beta_1>0$, $\alpha=0.10$. $s_{b_1}=1360.0/\sqrt{6710}=16.603$; $t=108.903/16.603=6.559>t_{4;0.90}=1.533$ ⇒ förkasta $H_0$: boendeyta har en positiv effekt på elkostnaden ($p\approx0.0014$).\\
 \textbf{f)} {\footnotesize
 \begin{tabular}[t]{@{}lrrrr@{}}
@@ -353,27 +374,26 @@ $H_0{:}\ \beta_1=0$ mot $H_a{:}\ \beta_1\neq0$; $F=43.025>F_{1,4;0.95}=7.71$ ⇒
 \textbf{g)} $x_0=150$: \ $\hat y_0=1240.426+108.90298\cdot150=17\,575.873$\\
 $s_{\hat y_0}=1360.011\sqrt{\tfrac16+\tfrac{(150-159)^2}{6710}}=574.978$;\quad $t_{4;0.975}=2.776445$\\
 95\,\% KI: $17\,575.873\pm2.776445\cdot574.978=[15\,979.479;\ 19\,172.267]$ kr/år (PI för en enskild villa: $[13\,476.287;\ 21\,675.460]$). \emph{Med 95\,\% konfidens täcker intervallet den genomsnittliga elkostnaden för villor på 150 m$^2$.}\par
-{\small\textbf{Kontrollera din räknarteknik} (tidigare tentor): 2024-10-25 uppg.\ 2 ($n=11$, maskiner $x$, minuter $y$): $\sum x=43$, $\sum y=1184$, $\sum x^2=201$, $\sum y^2=147\,552$, $\sum xy=5438$ ⇒ $S_{xx}=32.9091$, $S_{xy}=809.6364$, $b_1=24.602$, $b_0=11.464$, $\hat y(4)=109.873$, $\SSE=191.7017$, $s^2=\SSE/9=21.300$. 2025-02-28 uppg.\ 3 ($n=12$, näbblängd $x$ → näbbredd $y$): $\sum x=573.3$, $\sum y=197.8$, $\sum x^2=27\,468.73$, $\sum y^2=3290.76$, $\sum xy=9466.36$ ⇒ $S_{xx}=79.3225$, $S_{xy}=16.465$, $b_1=0.208$, $b_0=6.567$. \textbf{Extra övning – muskelmassa} ($n=60$, $x$ = ålder): $b_1=-1.190$ (muskelmassan minskar i genomsnitt 1.19 enheter per år), $b_0=156.35$; $t_{58;0.975}=2.002$; 95\,\% KI för $\beta_1$: $-1.190\pm2.002\cdot0.0902=[-1.371;\ -1.009]$; PI vid $x=65$: $\hat y=156.35-1.190\cdot65=79.0$, $79.0\pm2.002\cdot8.24=[62.5;\ 95.5]$.\par}
+{\small\textbf{Kontrollera din räknarteknik} (tidigare tentor): 2024-10-25 uppg.\ 2 ($n=11$, maskiner $x$, minuter $y$): $\sum x=43$, $\sum y=1184$, $\sum x^2=201$, $\sum y^2=147\,552$, $\sum xy=5438$ ⇒ $S_{xx}=32.9091$, $S_{xy}=809.6364$, $b_1=24.602$, $b_0=11.464$, $\hat y(4)=109.873$, $\SSE=191.7017$, $s^2=\SSE/9=21.300$. 2025-02-28 uppg.\ 3 ($n=12$, näbblängd $x$ → näbbredd $y$): $\sum x=573.3$, $\sum y=197.8$, $\sum x^2=27\,468.73$, $\sum y^2=3290.76$, $\sum xy=9466.36$ ⇒ $S_{xx}=79.3225$, $S_{xy}=16.465$, $b_1=0.208$, $b_0=6.567$. \textbf{2025-12-08 uppg.\ 1} ($n=8$, temp $x$ → ozon $y$): $\sum x=645$, $\sum y=359$, $\sum x^2=52\,377$, $\sum y^2=24\,371$, $\sum xy=30\,273$ ⇒ $S_{xx}=373.875$, $S_{xy}=1328.625$, $S_{yy}=8260.875$, $b_1=3.554$, $b_0=-241.639$, $\SSR=4721.48$, $\SSE=3539.39$, $F=8.004>F_{1,6;0.95}=5.99$; 90\,\% KI för $\beta_1$: $3.554\pm1.943\cdot1.2561=[1.113;\ 5.994]$; 80\,\% PI vid $x_0=85$: $\hat y=60.422$, $\pm1.440\cdot26.341=[22.50;\ 98.35]$. \obs Lösningsförslaget avrundade $b_1$ till 3.6 ⇒ $\hat y=64.5$, PI $[25.9;\ 103.1]$ och $\SSR+\SSE\neq\SSY$ – kontrollera alltid $\SSR+\SSE=\SSY$. \textbf{Extra övning – muskelmassa} ($n=60$, $x$ = ålder): $b_1=-1.190$ (muskelmassan minskar i genomsnitt 1.19 enheter per år), $b_0=156.35$; $t_{58;0.975}=2.002$; 95\,\% KI för $\beta_1$: $-1.190\pm2.002\cdot0.0902=[-1.371;\ -1.009]$; PI vid $x=65$: $\hat y=156.35-1.190\cdot65=79.0$, $79.0\pm2.002\cdot8.24=[62.5;\ 95.5]$.\par}
 
 % ======================================================================
 \sect[cGrund]{Teori: minsta kvadratskattningarnas egenskaper}{sec:teori}
 \textbf{Normalekvationer} ($\partial\SSE/\partial b_0=\partial\SSE/\partial b_1=0$): $nb_0+b_1\sum x_i=\sum y_i$ och $b_0\sum x_i+b_1\sum x_i^2=\sum x_iy_i$; i matrisform $\X'\X\bbh=\X'\Y$.
 \textbf{Residualerna:} $\sum e_i=0$, $\sum x_ie_i=0$, $\sum\hat y_ie_i=0$, medelvärdet av $\hat y_i$ är $\bar y$.
-\textbf{Väntevärdesriktiga:} $E(b_j)=\beta_j$, $E(\MSE)=\sigma^2$. Gauss–Markov: OLS har minst varians bland linjära väntevärdesriktiga skattningar (BLUE) under oberoende, $E(E_i)=0$ och lika varians; normalfördelningen behövs för $t$-/$F$-test och intervall.
-\textbf{Enkel regression:} $\mathrm{Var}(b_1)=\frac{\sigma^2}{S_{xx}}$, $\mathrm{Var}(b_0)=\sigma^2\bigl(\frac1n+\frac{\bar x^2}{S_{xx}}\bigr)$, $\mathrm{Cov}(b_0,b_1)=-\frac{\bar x\,\sigma^2}{S_{xx}}$. Större spridning i $x$ (större $S_{xx}$) ⇒ säkrare $b_1$.
-\textbf{Multipel korrelation:} $R=\mathrm{corr}(Y,\hat Y)$ och $R^2$ är dess kvadrat.
+\textbf{Väntevärdesriktiga:} $E(b_j)=\beta_j$, $E(\MSE)=\sigma^2$; Gauss–Markov: OLS är BLUE (oberoende, lika varians); normalfördelning behövs för $t$-/$F$-test och intervall. $\mathrm{Var}(b_1)=\sigma^2/S_{xx}$ ⇒ större spridning i $x$ ger säkrare $b_1$. $R=\mathrm{corr}(Y,\hat Y)$.
 
 % ======================================================================
-\sect[cInfer]{Hypotesprövning – skriv ut alla steg}{sec:test}
+\sect[cInfer]{Hypotesprövning – lärarens 7 steg (skriv ut alla)}{sec:test}
 \begin{enumerate}[label=\arabic*.,leftmargin=9pt]
-\item Hypoteser, t.ex.\ $H_0{:}\ \beta_j=0$ mot $H_a{:}\ \beta_j\neq0$ ($>0$/$<0$ om ensidigt) – även i ord.
-\item Signifikansnivå $\alpha$ (anges i uppgiften, annars 0.05).
-\item Testvariabel och dess fördelning under $H_0$: $t=\frac{b_j-0}{s_{b_j}}\sim t_{n-p}$, $F\sim F_{df_1,df_2}$.
-\item Beslutsregel: förkasta $H_0$ om $|t|>t_{n-p;1-\alpha/2}$ (tvåsidigt), $t>t_{n-p;1-\alpha}$ ($H_a{:}>$), $t<-t_{n-p;1-\alpha}$ ($H_a{:}<$), $F>F_{df_1,df_2;1-\alpha}$ (alltid ensidigt) – eller om $p$-värdet $<\alpha$.
-\item Beräkna (visa insatta värden).
-\item Beslut: förkasta / förkasta inte $H_0$.
-\item Slutsats i ord i sammanhanget: ”På 5\,\% signifikansnivå finns stöd för att … har ett (positivt) samband med …”. Säg aldrig att $H_0$ är bevisad eller sann.
+\item \textbf{Kontrollera antaganden} (eller: ”gjordes i c), antas uppfyllda”).
+\item \textbf{Hypoteser}, t.ex.\ $H_0{:}\ \beta_1=0$ mot $H_1{:}\ \beta_1\neq0$ ($>0$/$<0$ om ensidigt) – även i ord.
+\item \textbf{Signifikansnivå} $\alpha$ (anges i uppgiften, annars 0.05).
+\item \textbf{Teststatistika} och fördelning under $H_0$: $t=\frac{b_j-0}{s_{b_j}}\sim t_{n-p}$, $F=\frac{\MSR}{\MSE}\sim F_{df_1,df_2}$.
+\item \textbf{Kritiskt område}: typ av mothypotes (höger-/vänster-/tvåsidig), $\nu=n-k-1$, kritiskt värde; förkasta $H_0$ om $|t|>t_{n-p;1-\alpha/2}$ (tvåsidigt), $t>t_{n-p;1-\alpha}$ ($H_1{:}>$), $t<-t_{n-p;1-\alpha}$ ($H_1{:}<$), $F>F_{df_1,df_2;1-\alpha}$ (alltid höger) – eller om $p<\alpha$.
+\item \textbf{Uträkning} (visa insatta värden).
+\item \textbf{Beslut och tolkning}: förkasta / förkasta inte $H_0$ + mening i sammanhanget (”På 5\,\% signifikansnivå finns stöd för att …”). Slutsatsen måste stämma med beslutet; säg aldrig att $H_0$ är bevisad.
 \end{enumerate}
+\textbf{Notation i lösningsförslagen 2025:} $t_{\nu,\alpha}$ och $F_{\nu_1,\nu_2,\alpha}$ är \emph{övre} $\alpha$-punkten, t.ex.\ $t_{4,0.1}=1.533$ (= vår $t_{4;0.90}$); $S_{Y|X}=s=\sqrt{\MSE}$, $S_X^2=S_{xx}/(n-1)$, $S_{\hat\beta_1}=S_{Y|X}/(S_X\sqrt{n-1})=s/\sqrt{S_{xx}}$; KI/PI: $\hat y_0\pm t\,S_{Y|X}\sqrt{[1+]\tfrac1n+\tfrac{(x_0-\bar x)^2}{(n-1)S_X^2}}$.
 \begin{figrad}
 \begin{tikzpicture}[x=\figunit,y=\figunit,
   declare function={bell(\t)=-0.33+0.72*exp(-((\t-0.8)/0.25)^2/2);
@@ -484,8 +504,8 @@ $\mathbf x_0=(1,x_{01},\dots,x_{0k})'$: $\hat y_0=\mathbf x_0'\bbh$;\quad $s^2_{
 KI för $\mu_{Y|\mathbf x_0}$: $\hat y_0\pm t_{n-p;1-\alpha/2}\,s_{\hat y_0}$;\quad PI för ny $Y_0$: $\hat y_0\pm t_{n-p;1-\alpha/2}\sqrt{\MSE+s^2_{\hat y_0}}$. \textbf{Ordet avgör} (§\ref{sec:verktyg}): ”genomsnittlig” ⇒ KI även om ”en villa” nämns (2025-10-23 g). \enk{KI = var medelvärdet för alla villor på 150 m$^2$ ligger; PI = var en enskild villa hamnar – bredare, för en enskild villa kan avvika från snittet.}\\
 \textbf{Snabbformel när tentan ger $c$:} $c=\mathbf x_0'(\X'\X)^{-1}\mathbf x_0$ (Kutner: $\mathbf x_h$) ⇒ $s^2_{\hat y_0}=\MSE\cdot c$:
 \[\text{KI: }\hat y_0\pm t_{n-p;1-\alpha/2}\sqrt{\MSE\cdot c}\qquad\text{PI: }\hat y_0\pm t_{n-p;1-\alpha/2}\sqrt{\MSE\,(1+c)}\]
-Enkel regression: $c=\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}$ (= hävstången $h$ för $x_0$). $c>\max h_{ii}$ ⇒ $\mathbf x_0$ ligger utanför datamolnet (dold extrapolation). \enk{$c$ mäter hur långt $\mathbf x_0$ ligger från datas mitt – större $c$ ⇒ bredare KI och PI.}\\
-\ex (sjukhusuppgiften) $\hat y_h=15\,892$, $c=0.93$: PI $=15\,892\pm1183=[14\,709;\ 17\,075]$. Sjukhusets observerade $17\,207$ ligger \emph{utanför} ⇒ ovanligt högt för ett sjukhus med dessa $x$-värden ⇒ sjukhuset ifrågasätts.\\
+Enkel regression: $c=\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}$ (= hävstången $h$ för $x_0$). $c>\max h_{ii}$ ⇒ $\mathbf x_0$ ligger utanför datamolnet (dold extrapolation). \enk{$c$ mäter hur långt $\mathbf x_0$ ligger från datas mitt – större $c$ ⇒ bredare KI och PI.}\par\sidbyte% sidbyte 2→3 här
+\sub{§\ref{sec:pred} forts.}\ex (sjukhusuppgiften) $\hat y_h=15\,892$, $c=0.93$: PI $=15\,892\pm1183=[14\,709;\ 17\,075]$. Sjukhusets observerade $17\,207$ ligger \emph{utanför} ⇒ ovanligt högt för ett sjukhus med dessa $x$-värden ⇒ sjukhuset ifrågasätts.\\
 Prediktera bara inom definitionsmängden (observerade $X$-värden) – kontrollera min/max! Centrerade/transformerade $X$: transformera $\mathbf x_0$ på samma sätt.
 
 % ======================================================================
@@ -494,8 +514,7 @@ $g$ oberoende test på nivå $\alpha$: $P(\ge1\text{ typ I-fel})=1-(1-\alpha)^g$
 \begin{itemize}
 \item \textbf{Bonferroni:} $\alpha/g$ per test/intervall, $B=t_{n-p;\,1-\alpha/(2g)}$: $b_j\pm B\,s_{b_j}$;\; $\hat y_0\pm B\,s_{\hat y_0}$ (KI);\; $\hat y_0\pm B\,s_{\text{pred}}$ (PI). Bra när $g$ är litet; bredare ju större $g$. \enk{fler intervall ⇒ större risk att något blir fel ⇒ dela $\alpha$ mellan dem så att alla gäller samtidigt.}
 \item \textbf{Working–Hotelling} (konfidensband för hela linjen, godtyckligt många $\mathbf x_0$): $\hat y_0\pm W\,s_{\hat y_0}$, $W^2=2F_{p,\,n-p;\,1-\alpha}$ (kurssidan; enkel regression: $W^2=2F_{2,n-2;1-\alpha}$). Beror inte på $g$.
-\par\columnbreak% sidbyte 2→3 här
-\item \sub{§\ref{sec:simultan} forts.}\textbf{Scheffé} ($g$ prediktionsintervall): $\hat y_0\pm S\,s_{\text{pred}}$, $S^2=g\,F_{g,\,n-p;\,1-\alpha}$ (kurssidan: $S=gF$, troligen tryckfel för $S^2$ – ange din formel), $s_{\text{pred}}=\sqrt{\MSE+s^2_{\hat y_0}}$.
+\item \textbf{Scheffé} ($g$ prediktionsintervall): $\hat y_0\pm S\,s_{\text{pred}}$, $S^2=g\,F_{g,\,n-p;\,1-\alpha}$ (kurssidan: $S=gF$, troligen tryckfel för $S^2$ – ange din formel), $s_{\text{pred}}=\sqrt{\MSE+s^2_{\hat y_0}}$.
 \end{itemize}
 Välj metoden med minst multiplikator ($B$ mot $W$, resp.\ $B$ mot $S$).
 
@@ -559,7 +578,8 @@ $Y=\beta_0+\beta_1X+\beta_2X^2+E$ är fortfarande en \emph{linjär} modell (linj
 \textbf{Kurssidans recept} (modellsvar §\ref{sec:teorisvar}): krökning i diagram/residualer → skapa $X^2$ som ny variabel, OLS → kontrollera residualerna igen → tolka $X$ genom alla termer ($b_1+2b_2x$), aldrig $b_1$ ensam.\\
 Effekten av $X$: $\mathrm d\hat y/\mathrm dx=b_1+2b_2x$ (beror på $x$); $b_2>0$ ⇒ U-form, $b_2<0$ ⇒ $\cap$-form; extrempunkt i $x=-b_1/(2b_2)$. Behövs krökningen? $t$-test för $\beta_2$ (partiellt $F$ för flera högre termer). Högre grad ($X^3,\dots$) bara om residualerna kräver det.\\
 \textbf{Centrering} $X_c=X-\bar x$: minskar korrelationen mellan $X$ och $X^2$ (VIF) och beräkningsproblem – gör beräkningarna stabilare, inte modellen bättre. Ändrar $b_0$, $b_1$ och deras tolkning ($b_1$ = lutningen vid $x=\bar x$: förändringen i $Y$ när $X$:s \textbf{avstånd från sitt medelvärde} ökar med 1), men \emph{inte} $b_2$, $\hat y$, residualerna, $\SSE$ eller $R^2$. Prediktion: centrera $x_0$ först!\\
-\textbf{Transformera $Y$:} $\ln Y$ eller $\sqrt Y$ vid högerskeva residualer/ökande varians (tratt); $\ln X$ vid avtagande effekt. För hög polynomgrad ⇒ modellen följer bruset (överanpassning).
+\textbf{Transformera $Y$:} $\ln Y$ eller $\sqrt Y$ vid högerskeva residualer/ökande varians (tratt); $\ln X$ vid avtagande effekt. För hög polynomgrad ⇒ modellen följer bruset (överanpassning).\\
+\ex (2025-12-08, uppg.\ 2, $n=153$, ozon) modell\_3: TempC + SolarC + WindC ($R^2_a=0.470$) är nästlad i modell\_4: + TempC$^2$ + SolarC$^2$ + WindC$^2$ ($R^2_a=0.588$). Partiellt $F=\frac{(65\,071-49\,572)/3}{49\,572/146}=15.22>F_{3,146;0.95}=2.67$ ⇒ kvadrattermerna behövs ⇒ modell\_4. \emph{Tolkning:} $b_0=24.4$ = förväntad ozonhalt vid medelvärdena (centrerat); TempC$^2>0$ ⇒ temperatureffekten $1.350+2\cdot0.0553\,$TempC blir starkare ju varmare; vind sänker ozon men effekten planar ut (WindC$^2>0$). \emph{Prediktion:} centrera först: $75-77.88=-2.88$, $80-185.9=-105.9$, $8-9.958=-1.958$ ⇒ $\hat y=19.91$ ppb (regn, vardag och juni ingår inte i modellen).
 \begin{figrad}
 \begin{tikzpicture}[x=\figunit,y=\figunit,declare function={pt(\t)=(\t-0.1)/1.4;}]
 \begin{scope}% a: krökt + bananresidualer
@@ -600,7 +620,7 @@ $r_{(-i)}=e_i\sqrt{\dfrac{n-k-2}{\SSE(1-h_i)-e_i^2}}=r_i\sqrt{\dfrac{n-k-2}{n-k-
 \item \textbf{DFFITS}$_i=r_{(-i)}\sqrt{\dfrac{h_i}{1-h_i}}$: inflytande på \emph{sitt eget} anpassade värde; gräns $|\text{DFFITS}|>1$ (små/medelstora data), $>2\sqrt{p/n}$ (stora data).
 \item \textbf{Cook's} $d_i=\dfrac1p\cdot\dfrac{h_i}{1-h_i}\cdot r_i^2$: inflytande på \emph{alla} anpassade värden; gräns $d_i>1$, eller robust: värde ur Kleinbaum tabell A.10 ($n$, $k$, $\alpha$) delat med $n-(k+1)$ (saknas A.10: använd gränsen 1 och skriv det). \enk{ta bort punkten och anpassa om: DFFITS = hur mycket punktens egen prognos flyttar sig; Cook = hur mycket alla prognoser flyttar sig.}
 \end{itemize}
-Avvikande $Y$ nära $\bar x$ (lågt $h$) flyttar linjen lite; högt $h$ + avvikande $Y$ ⇒ stort inflytande; högt $h$ men på linjen ⇒ ofarlig.
+Högt $h$ + avvikande $Y$ ⇒ stort inflytande; högt $h$ men på linjen ⇒ ofarlig.
 \begin{figrad}
 \begin{tikzpicture}[x=\figunit,y=\figunit,declare function={tl(\t)=0.32*(\t-0.8)-0.05;}]
 \begin{scope}% 1 avvikande Y nära xbar
@@ -669,8 +689,7 @@ $\mathrm{PRESS}=\sum\bigl(e_i/(1-h_{ii})\bigr)^2$ & lågt = bra prediktionsförm
 $\mathrm{MSPR}=\frac1{n^*}\sum(y^*_i-\hat y^*_i)^2$ & lågt (valideringsdata); $\gg\MSE$ ⇒ överanpassad\\
 $K$-faldig $\mathrm{CV}=\frac1K\sum_{k=1}^{K}\MSE_k$ & lågt; $K=n$ (LOOCV) ⇒ $\mathrm{PRESS}/n$
 \end{tabular}}\\[1pt]
-($p$ = alla parametrar i delmodellen inkl.\ intercept och varje indikator; 2025-01: 9 var.\ men fulla modellens $C_p=16=p$.) \textbf{Intern} validering: mått på träningsdata ($R^2_a$, AIC, $C_p$, PRESS). \textbf{Extern}: dela data slumpmässigt i träning ($\ge50$\,\%) och validering ($\ge10$\,\%) och jämför MSPR; testmängd ger väntevärdesriktig skattning för den slutliga modellen; $K$-faldig korsvalidering: $K$ delar turas om att vara valideringsdel ($\MSE_k$; tränas på övriga $K-1$). Tidsserier: dela vid en tidpunkt. \enk{$C_p$ jämför delmodellens fel med fulla modellens; $C_p\gg p$ ⇒ viktig variabel saknas, $C_p\approx p$ ⇒ lagom.} \enk{AIC = hur dåligt modellen passar (SSE) + straff per parameter; lägst vinner – säger något om hur den klarar ny data.}\par\columnbreak% sidbyte 3→4 här
-\sub{§\ref{sec:val} forts.}\enk{MSPR = modellens genomsnittliga kvadratfel på data den inte sett; MSPR $\gg$ MSE ⇒ den har lärt sig bruset.} \enk{PRESS = varje punkt predikteras av modellen anpassad \emph{utan} den ($e_i/(1-h_{ii})$); nära SSE ⇒ generaliserar bra.}
+($p$ = alla parametrar i delmodellen inkl.\ intercept och varje indikator; 2025-01: 9 var.\ men fulla modellens $C_p=16=p$.) \textbf{Intern} validering: mått på träningsdata ($R^2_a$, AIC, $C_p$, PRESS). \textbf{Extern}: dela data slumpmässigt i träning ($\ge50$\,\%) och validering ($\ge10$\,\%) och jämför MSPR; testmängd ger väntevärdesriktig skattning för den slutliga modellen; $K$-faldig korsvalidering: $K$ delar turas om att vara valideringsdel ($\MSE_k$; tränas på övriga $K-1$). Tidsserier: dela vid en tidpunkt. \enk{$C_p$ jämför delmodellens fel med fulla modellens; $C_p\gg p$ ⇒ viktig variabel saknas, $C_p\approx p$ ⇒ lagom.} \enk{AIC = hur dåligt modellen passar (SSE) + straff per parameter; lägst vinner – säger något om hur den klarar ny data.} \enk{MSPR = modellens genomsnittliga kvadratfel på data den inte sett; MSPR $\gg$ MSE ⇒ den har lärt sig bruset.} \enk{PRESS = varje punkt predikteras av modellen anpassad \emph{utan} den ($e_i/(1-h_{ii})$); nära SSE ⇒ generaliserar bra.}
 \textbf{Underanpassning}: för enkel, missar samband. \textbf{Överanpassning}: för komplex, modellerar bruset, generaliserar dåligt.
 \begin{figrad}
 \begin{tikzpicture}[x=\figunit,y=\figunit,declare function={uu(\t)=(\t-0.35)/3.05; mse(\t)=-0.28+0.6*exp(-uu(\t)/0.24); mspr(\t)=mse(\t)+0.05+0.55*uu(\t)^2;}]
@@ -698,7 +717,7 @@ Stegvisa algoritmer är \emph{giriga} (ser ett steg i taget), känsliga för mul
 \ex (2025-01-20) Största modellen (9 var.) bäst på $R^2$ och $R^2_a$; modell 8 bäst på $C_p$ och AIC (straffar komplexitet ⇒ mer tillförlitliga för generaliserbarhet). Boyta–antal rum $r=0.815<0.9$ ⇒ ingen överhängande multikollinearitetsrisk.
 
 % ======================================================================
-\sect[cBygg]{Välj modell – checklista och ex.\ 2025-10-23, uppg.\ 2}{sec:valj}
+\sect[cBygg]{Välj modell – checklista och ex.\ 2025-10-23 och 2025-12-08}{sec:valj}
 (1) \textbf{Lämplighet:} residualdiagram (mönster, varians, normalitet, extremvärden). (2) \textbf{Anpassning mot komplexitet:} $R^2_a$, AIC, $C_p$, $s$ – välj den enklaste modell som förklarar i stort sett lika bra. (3) \textbf{Test:} $F$ för modellen, partiellt $F$ mellan nästlade modeller, $t$ för termerna. (4) \textbf{Multikollinearitet:} korrelationsmatris, VIF. (5) \textbf{Tolkningsbarhet} och hierarki. (6) \textbf{Prediktion} inom definitionsmängden.\\[1pt]
 {\small
 \begin{tabular}{@{}lrr>{\raggedright\arraybackslash}p{0.69\linewidth}@{}}
@@ -708,17 +727,26 @@ mod\_2 & 3 & 0.418 & utan Eluppvärmt: två grupper i $e$, S-formad QQ ⇒ vikti
 mod\_3 & 15 & 0.945 & alla interaktioner upp till 4:e ordningen: bra residualer men överanpassad och svårtolkad\\
 mod\_4 & 3 & 0.941 & Boendeyta × Eluppvärmt: slumpmässig svärm, rak QQ ⇒ \textbf{välj}
 \end{tabular}}\\[1pt]
-Partiellt $F$ (mod\_4 är nästlad i mod\_3): $F=\frac{(624\,728\,614-507\,449\,855)/12}{507\,449\,855/84}=1.62<F_{12,84;0.95}=1.87$ ⇒ extratermerna behövs inte. Modell-$F$ för mod\_4: $\frac{10\,260\,304\,836/3}{624\,728\,614/96}=525.6>F_{3,96;0.95}=2.70$. Interaktion $t=6.46>t_{96;0.975}=1.985$ ⇒ effekten av boendeyta är större för eluppvärmda (189.7 mot 113.5 kr/m$^2$); Eluppvärmt ($t=0.87$) behålls (hierarki). Prediktion (eluppvärmd, 200 m$^2$): $3604.88+113.54\cdot200+1857.10+76.15\cdot200=43\,399.980$ kr/år. Antal rum, takhöjd och tomtyta ingår inte i mod\_4 (tomtyta 1700 > max 1523 hade dessutom varit extrapolering).
+Partiellt $F$ (mod\_4 är nästlad i mod\_3): $F=\frac{(624\,728\,614-507\,449\,855)/12}{507\,449\,855/84}=1.62<F_{12,84;0.95}=1.87$ ⇒ extratermerna behövs inte. Modell-$F$ för mod\_4: $\frac{10\,260\,304\,836/3}{624\,728\,614/96}=525.6>F_{3,96;0.95}=2.70$. Interaktion $t=6.46>t_{96;0.975}=1.985$ ⇒ effekten av boendeyta är större för eluppvärmda (189.7 mot 113.5 kr/m$^2$); Eluppvärmt ($t=0.87$) behålls (hierarki). Prediktion (eluppvärmd, 200 m$^2$): $3604.88+113.54\cdot200+1857.10+76.15\cdot200=43\,399.980$ kr/år. Antal rum, takhöjd och tomtyta ingår inte i mod\_4 (tomtyta 1700 > max 1523 hade dessutom varit extrapolering).\\[1pt]
+\textbf{2025-12-08, uppg.\ 2} (ozon, $n=153$) – ”ange för- och nackdelar för vardera modell”:\\
+{\small
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.86\linewidth}@{}}
+modell\_1 & 6 huvudeffekter, $R^2_a=0.473$: enkel och lättolkad; Month, DayType, Rain ej signifikanta; korrelerade $X$ (multikollinearitet)\\
+modell\_2 & WindC×Rain + Solar×DayType, $R^2_a=0.392$: signifikant WindC×Rain men saknar Temp ⇒ underanpassad, lägst $R^2_a$\\
+modell\_3 & TempC + SolarC + WindC (centrerade), $R^2_a=0.470$: enklast, alla signifikanta, låg multikollinearitet – kanske för enkel\\
+modell\_4 & modell\_3 + kvadrattermer, $R^2_a=0.588$: högst $R^2_a$, fångar krökning, mer komplex ⇒ partiellt $F$ $15.22>2.67$ ⇒ \textbf{välj} (§\ref{sec:poly})
+\end{tabular}}\\[1pt]
+Residualerna: udda mönster mot $\hat y$ och skev $Y$ ⇒ föreslå $\ln Y$ (lösningsförslaget).
 
 % ======================================================================
 \sect[cBygg]{Utvärdera en modell – ”Är modellen bra och lämplig?”}{sec:utvardera}
 \textbf{Lämplig} = antagandena i §\ref{sec:modell} uppfyllda – skriv \emph{vad du ser} och \emph{vad det betyder}; extremvärden/inflytelserika observationer (DFFITS, Cook) – nämn dem och föreslå undersökning. \textbf{Bra} = högt $R^2$/$R^2_a$ (ange siffran), signifikant $F$-test, rimliga och signifikanta koefficienter, ingen allvarlig multikollinearitet, lagom komplex. Avsluta med en samlad bedömning + förbättringsförslag (transformera $Y$, lägg till variabel/interaktion, undersök extremvärden).\\
-\ex (2025-02-28, 1d) ”Förklaringsgraden är hög ($\approx0.91$) och modellen är signifikant enligt $F$-testet. Residualerna är ungefär normalfördelade (klockformat histogram, QQ-punkterna följer linjen) men det finns många extremvärden i båda riktningarna. Variansen ökar med större anpassade värden ⇒ lika varians är inte uppfyllt. Extremvärdena bör undersökas (DFFITS, Cook's distance) och en transformation av $Y$ övervägas.”
+\ex (2025-02-28, 1d) ”$R^2\approx0.91$ och $F$-testet signifikant. Residualerna ungefär normalfördelade men många extremvärden; variansen ökar med $\hat y$ ⇒ lika varians ej uppfyllt. Undersök extremvärdena (DFFITS, Cook) och överväg att transformera $Y$.”
 
 % ======================================================================
 \sect[cTenta]{Sant/falskt – påståenden från tidigare tentor}{sec:sf}
-{\footnotesize Uppgiften: markera 2 korrekta resp.\ 2 falska påståenden; fel markering ger $-1$ p ⇒ markera bara det du är säker på. \sant = sant, \falskt = falskt.}
-\begin{itemize}[leftmargin=7pt,labelsep=2pt]
+{\footnotesize Format 2024–25 (ej 2025-10-23/12-08): markera 2 korrekta resp.\ 2 falska; fel markering ger $-1$ p ⇒ markera bara det du är säker på. \sant = sant, \falskt = falskt.}
+{\small\begin{itemize}[leftmargin=7pt,labelsep=2pt]
 \item[\falskt] $F$-test för modellen och partiellt $F$-test undersöker samma hypoteser. (Alla $\beta$ resp.\ en delmängd.)
 \item[\falskt] Ett $t$-test kan avgöra om en kategorisk variabel med flera nivåer har samband med $Y$. (Partiellt $F$.)
 \item[\sant] Kvantitativ variabel: ”när variabeln ökar en enhet förändras $Y$ med koefficientens värde” (givet övriga konstanta).
@@ -741,41 +769,21 @@ Partiellt $F$ (mod\_4 är nästlad i mod\_3): $F=\frac{(624\,728\,614-507\,449\,
 \item[\falskt] Det enda sättet att bedöma en modells generaliserbarhet är extern validering. (T.ex.\ AIC.)
 \item[\falskt] I en observationsstudie med två förklarande variabler är $\SSY=\SSq(X_1)+\SSq(X_2)+\SSE$. (Rätt: $\SSq(X_1)+\SSq(X_2|X_1)+\SSE$.)
 \item[\sant] I enkel linjär regression testar $t$-testet för lutningen samma hypoteser som $F$-testet för modellen ($F=t^2$).
-\end{itemize}
-\textbf{Fler troliga påståenden:}
-\begin{itemize}[leftmargin=7pt,labelsep=2pt]
-\item[\sant] $R^2$ kan aldrig minska när en variabel läggs till.
-\item[\sant] Sekventiella SS beror på variablernas ordning (men summerar alltid till $\SSR$); $\SSE$ och $\SSR$ gör det inte.
-\item[\falskt] Ett icke-signifikant intercept ska tas bort ur modellen.
-\item[\sant] Prediktionsintervallet är bredare än KI för medelvärdet vid samma $x_0$.
-\item[\falskt] Hög leverage innebär alltid att observationen är inflytelserik.
-\item[\falskt] $p$-värdet är sannolikheten att $H_0$ är sann.
-\item[\falskt] En observationsstudie kan påvisa kausala samband.
-\item[\sant] Centrering minskar multikollinearitet mellan $X$ och $X^2$; den ändrar $b_0$ och $b_1$ men inte $b_2$, $\hat y$ eller $R^2$.
-\item[\falskt] Bonferroniintervall blir smalare ju fler intervall som skattas.
-\item[\sant] I enkel linjär regression är $R^2$ kvadraten på Pearsons $r$.
-\item[\falskt] Leverage mäter hur avvikande observationen är i $Y$-led. (I $X$-led; $Y$-led = jackknife/standardiserad residual.)
-\item[\falskt] Vid ensidig mothypotes används $t_{df;1-\alpha/2}$. ($t_{df;1-\alpha}$.)
-\item[\sant] Residualerna summerar till 0 i en modell med intercept.
-\item[\falskt] Standardiserade residualer tar hänsyn till observationens leverage. (Det gör studentiserade/jackknife.)
-\item[\falskt] MSPR beräknas på träningsdata. (Valideringsdata.)
-\item[\sant] Signifikant $F$-test: minst en (inte alla) lutningsparametrar är skild från 0.
-\end{itemize}
-
-% ======================================================================
-\sect[cBygg]{Utblick: logistisk regression och GLM (kap.\ 10–11)}{sec:glm}
-Binär $Y$: $\pi=P(Y=1|X)$, logit $\ln\frac{\pi}{1-\pi}=\mathbf x'\bb$; $e^{b_j}$ = oddskvot: oddset för $Y=1$ multipliceras med $e^{b_j}$ när $X_j$ ökar en enhet. Ingen SSE/$R^2$; Wald: $z=b_j/s_{b_j}$.
+\end{itemize}}
 
 % ======================================================================
 \sect[cTenta]{Teorifrågor – korta modellsvar}{sec:teorisvar}
-\textbf{När används polynom, och hur anpassas och tolkas de?} När sambandet mellan $X$ och $Y$ är icke-linjärt (krökt spridningsdiagram eller krökta residualer). Polynomtermerna ($X^2$, $X^3$, …) läggs till som separata variabler och modellen skattas med minsta kvadratmetoden (centrera gärna $X$). Effekten av $X$ tolkas genom att summera alla termers bidrag ($b_1+2b_2x$), inte en term i taget.\\
-\textbf{Förklara Simpsons paradox.} Ett samband som syns inom flera grupper försvinner eller byter riktning när grupperna slås ihop, t.ex.\ positivt samband mellan näbbredd och näbblängd inom varje pingvinart men negativt totalt. Paradoxen kan dölja eller förvränga sambanden i en regressionsmodell ⇒ ta med grupperingsvariabeln.\\
-\textbf{Varför inte $t$-test för en kategorisk variabel med flera nivåer?} Variabeln motsvaras av $c-1$ parametrar; varje $t$-test jämför bara en kategori med referensen (och beror på valet av referens). Hela variabeln: partiellt $F$ ($H_0$: alla $c-1$ $\beta=0$).
+\textbf{När används polynom, och hur anpassas och tolkas de?} När sambandet är icke-linjärt (krökt spridningsdiagram/residualer). $X^2$, $X^3$, … läggs till som separata variabler och skattas med minsta kvadratmetoden (centrera gärna $X$). Effekten av $X$ tolkas genom alla termer tillsammans ($b_1+2b_2x$).\\
+\textbf{Förklara Simpsons paradox.} Ett samband inom flera grupper försvinner eller byter riktning när grupperna slås ihop (näbbredd–näbblängd: positivt inom varje art, negativt totalt). Kan dölja eller förvränga sambanden i en regressionsmodell ⇒ ta med grupperingsvariabeln.\\
+\textbf{Varför inte $t$-test för en kategorisk variabel med flera nivåer?} Den har $c-1$ parametrar; varje $t$-test jämför bara en kategori med referensen. Hela variabeln: partiellt $F$ ($H_0$: alla $c-1$ $\beta=0$).
 
 % ======================================================================
 \sect[cTenta]{Tentatips}{sec:tips}
 \begin{itemize}
-\item Svarsbladet: numeriska svar med tre decimaler i rutorna (10.693 → 1\;0\;.\;6\;9\;3); uträkningar och tolkningar på separat papper. Nytt svarsblad: \textbf{ett} kryss per flervalsfråga om inget annat anges – läs instruktionen (2+2-formatet gällde 2024–25).
+\item \textbf{Tentaformat 2025} (2025-10-23, 2025-12-08): uppg.\ 1 enkel regression för hand (13–15p: figur, modell + tolkning, antaganden med ✓/✗-figurer, $t$-test, ANOVA + $F$-test, KI för $\beta_1$, KI/PI för $\hat y_0$); uppg.\ 2 modellval (5–7p: för-/nackdelar per modell, partiellt $F$, tolkning, prediktion). Inget sant/falskt.
+\item \textbf{Mall uppgift 1} (lösningsförslagen): a) spridningsdiagram $Y$ mot $X$ med axeltitlar; b) tabell $x$, $y$, $x-\bar x$, $y-\bar y$, $(x-\bar x)^2$, $(x-\bar x)(y-\bar y)$ ⇒ $b_1$, $b_0$, modellen i ord + tolkning ($b_0$ ofta orimligt); c) 4 antaganden + ✓/✗-figurer; d) kolumner $\hat y$, $e$, $e^2$ ⇒ $e$ mot $i$, $e$ mot $\hat y$, QQ ($p_i$, $z$), histogram, ”svårt med få obs.”; e)–f) $t$-test och ANOVA + $F$-test i 7 steg (§\ref{sec:test}); g) KI/PI – ange $t$, $\nu$ och svar i ord med enhet.
+\item \textbf{Svara på alla deluppgifter}, även kort: en rättad tenta 2025-12-08 hoppade över KI, PI, tolkning och prediktion ⇒ 12p (G). Slutsatsen måste stämma med beslutet (−0.5p 2025-10-23).
+\item Svarsblad med rutor (2024–25): tre decimaler (10.693 → 1\;0\;.\;6\;9\;3), uträkningar på separat papper; läs kryssinstruktionen.
 \item Redovisa, tolka och motivera: formel → insatta värden → resultat → mening på svenska med enhet och ”i genomsnitt / givet övriga konstanta”.
 \item Saknas en siffra: skriv det, anta ett rimligt värde och lös vidare. Tabellavläsning och interpolering: §\ref{sec:tab}.
 \end{itemize}
