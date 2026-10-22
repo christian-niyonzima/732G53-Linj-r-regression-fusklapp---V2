@@ -133,7 +133,7 @@ Källor: hietalai.github.io/statistics-in-r (Del II) och tentor 2024-10-25 – 2
 \tsq{cInfer} & Hypotesprövningens steg, $p$-värde & §\ref{sec:test} (s.\pageref{sec:test})\\
 \tsq{cGrund} & Tolka koefficient, $R^2$, intervall & §\ref{sec:tolk} (s.\pageref{sec:tolk})\\
 \tsq{cBygg} & Tolka och testa indikator, interaktion & §\ref{sec:dummy} (s.\pageref{sec:dummy}), §\ref{sec:inter} (s.\pageref{sec:inter})\\
-\tsq{cInfer} & Läs R-utskrift, $R^2$ ur ANOVA-tabell, sekventiella SS & §\ref{sec:anova} (s.\pageref{sec:anova}), §\ref{sec:R2} (s.\pageref{sec:R2})\\
+\tsq{cInfer} & Läs utskrifterna i tentan, $R^2$ ur ANOVA-tabell, sekventiella SS & §\ref{sec:anova} (s.\pageref{sec:anova}), §\ref{sec:R2} (s.\pageref{sec:R2})\\
 \tsq{cInfer} & $F$-test för modellen / $t$-test för en parameter & §\ref{sec:F} (s.\pageref{sec:F}), §\ref{sec:t} (s.\pageref{sec:t})\\
 \tsq{cInfer} & Partiellt $F$: kvalitativ variabel, ”kan modellen reduceras?” & §\ref{sec:partF} (s.\pageref{sec:partF})\\
 \tsq{cInfer} & Prediktion (snabbformel med $c$); flera intervall samtidigt & §\ref{sec:pred} (s.\pageref{sec:pred}), §\ref{sec:simultan} (s.\pageref{sec:simultan})\\
@@ -405,7 +405,7 @@ $s_{\hat y_0}=1360.011\sqrt{\tfrac16+\tfrac{(150-159)^2}{6710}}=574.978$;\quad $
   {Förkasta $H_0$ om testvärdet hamnar i det färgade området (total area $=\alpha$).};
 \end{tikzpicture}
 \end{figrad}
-$p$-värde $=P(\text{minst lika extrem testvariabel}\mid H_0\text{ sann})$ – \emph{inte} $P(H_0\text{ sann})$. Tvåsidigt $p=2P(T>|t|)$; R ger tvåsidigt $p$ ⇒ ensidigt $p/2$ om $b_j$ har tecknet i $H_a$. Typ I-fel: förkasta sann $H_0$ (risk $\alpha$); typ II-fel: behålla falsk $H_0$. $0\notin$ 95\,\%-KI ⇔ förkasta $H_0{:}\ \beta_j=0$ på 5\,\% (tvåsidigt). \enk{hur ovanligt vårt resultat vore om $H_0$ vore sann. Litet $p$ ($<\alpha$) ⇒ resultatet passar dåligt med $H_0$ ⇒ förkasta.} \enk{”positiv effekt” ⇒ $H_a{:}\ \beta_1>0$ ⇒ hela $\alpha$ i högra svansen ⇒ $t_{df;1-\alpha}$ (inte $1-\alpha/2$).}
+$p$-värde $=P(\text{minst lika extrem testvariabel}\mid H_0\text{ sann})$ – \emph{inte} $P(H_0\text{ sann})$. Tvåsidigt $p=2P(T>|t|)$; utskriftens \texttt{Pr(>|t|)} är tvåsidigt ⇒ ensidigt $p/2$ om $b_j$ har tecknet i $H_a$. Typ I-fel: förkasta sann $H_0$ (risk $\alpha$); typ II-fel: behålla falsk $H_0$. $0\notin$ 95\,\%-KI ⇔ förkasta $H_0{:}\ \beta_j=0$ på 5\,\% (tvåsidigt). \enk{hur ovanligt vårt resultat vore om $H_0$ vore sann. Litet $p$ ($<\alpha$) ⇒ resultatet passar dåligt med $H_0$ ⇒ förkasta.} \enk{”positiv effekt” ⇒ $H_a{:}\ \beta_1>0$ ⇒ hela $\alpha$ i högra svansen ⇒ $t_{df;1-\alpha}$ (inte $1-\alpha/2$).}
 
 % ======================================================================
 \sect[cGrund]{Tolkningsmallar}{sec:tolk}
@@ -430,7 +430,7 @@ $s_{b_j}$ = roten ur diagonalelement $j$; kovarianserna står utanför diagonale
 \textbf{Enkel regression:} $\X'\X=\left[\begin{smallmatrix}n&\sum x\\ \sum x&\sum x^2\end{smallmatrix}\right]$, $\X'\Y=\left[\begin{smallmatrix}\sum y\\ \sum xy\end{smallmatrix}\right]$, $(\X'\X)^{-1}=\frac{1}{nS_{xx}}\left[\begin{smallmatrix}\sum x^2&-\sum x\\ -\sum x&n\end{smallmatrix}\right]$.
 
 % ======================================================================
-\sect[cInfer]{ANOVA-tabell och R-utskrifter}{sec:anova}
+\sect[cInfer]{ANOVA-tabell och utskrifter i tentan}{sec:anova}
 {\small
 \begin{tabular}{@{}lllll@{}}
 Källa & $df$ & SS & MS & $F$\\\hline
@@ -439,12 +439,19 @@ Residual & $n-k-1$ & $\SSE=\sum(y_i-\hat y_i)^2$ & $\MSE=\SSE/(n-k-1)$ & \\
 Total & $n-1$ & $\SSY\,(=\mathrm{SST})=\sum(y_i-\bar y)^2$ & &
 \end{tabular}}\\[1pt]
 $\SSY=\SSR+\SSE$ (även $df$ adderas): total = förklarad + oförklarad variation. \enk{dela upp $Y$:s totala variation i ”förklarad av modellen” + ”rest”; likaså $df$.}\\
-ANOVA-tabellen i tentan (R:s \texttt{anova()}) visar \textbf{sekventiella} (typ I) SS: rad 1 $=\SSq(X_1)$, rad 2 $=\SSq(X_2|X_1)$, rad 3 $=\SSq(X_3|X_1,X_2)$, …; en kvalitativ variabel med $c$ kategorier = en rad med $df=c-1$. \enk{$\SSq(X_2|X_1)$ = den extra förklaring $X_2$ ger utöver det $X_1$ redan förklarat; mycket mindre än $\SSq(X_2)$ ⇒ de förklarar samma sak.}
+ANOVA-tabellen som ges i tentan visar \textbf{sekventiella} (typ I) SS: rad 1 $=\SSq(X_1)$, rad 2 $=\SSq(X_2|X_1)$, rad 3 $=\SSq(X_3|X_1,X_2)$, …; en kvalitativ variabel med $c$ kategorier = en rad med $df=c-1$. \enk{$\SSq(X_2|X_1)$ = den extra förklaring $X_2$ ger utöver det $X_1$ redan förklarat; mycket mindre än $\SSq(X_2)$ ⇒ de förklarar samma sak.}
 \begin{itemize}
-\item $\SSR$ = summan av alla variabelrader; \texttt{Residuals} = $\SSE$ och $\MSE$; $\SSY$ = summan av \emph{alla} SS-rader.
+\item \texttt{Df}, \texttt{Sum Sq}, \texttt{Mean Sq}, \texttt{F value}, \texttt{Pr(>F)} = $df$, SS, MS, $F$, $p$; raden \texttt{Residuals} = $\SSE$, $\MSE$; $\SSR$ = summan av variabelraderna; $\SSY$ = summan av \emph{alla} rader.
 \item Radens $F=\mathrm{MS}_{\text{rad}}/\MSE$ = partiellt $F$-test för variabeln givet raderna \emph{ovanför}. Ordningen påverkar raderna men inte $\SSE$, $\SSR$, $\SSY$.
 \end{itemize}
-Koefficienttabellen (R:s \texttt{summary()}): \texttt{Estimate} $=b_j$, \texttt{Std.\,Error} $=s_{b_j}$, \texttt{t value} $=b_j/s_{b_j}$, \texttt{Pr(>|t|)} = tvåsidigt $p$; \texttt{Residual standard error} $=s=\sqrt{\MSE}$ på $n-p$ df; \texttt{Multiple R-squared} $=R^2$; \texttt{Adjusted R-squared} $=R^2_a$; \texttt{F-statistic} på $k$ och $n-p$ df.\\
+\textbf{Koefficienttabellen} (ges färdig på papper – du läser av, inget körs i dator):\\
+{\small\setlength{\tabcolsep}{2pt}%
+\begin{tabular*}{\linewidth}{@{}ll@{\extracolsep{\fill}}l@{\extracolsep{0pt}\hspace{2pt}}l@{}}
+\texttt{Estimate} & $b_j$ & \texttt{Residual standard error} & $s=\sqrt{\MSE}$ ($n-p$ df)\\
+\texttt{Std.\,Error} & $s_{b_j}$ & \texttt{Multiple R-squared} & $R^2$\\
+\texttt{t value} & $t=b_j/s_{b_j}$ & \texttt{Adjusted R-squared} & $R^2_a$\\
+\texttt{Pr(>|t|)} & tvåsidigt $p$ & \texttt{F-statistic} & modell-$F$ ($k$, $n-p$ df)
+\end{tabular*}}\\[1pt]
 \textbf{Baklänges:} $s_b=b/t$;\; $\SSE=s^2(n-p)$;\; $R^2=1-\SSE/\SSY$;\; $F=\frac{R^2/k}{(1-R^2)/(n-p)}$;\; $\SSY=\SSE/(1-R^2)$.\\
 \ex $R^2$ ur ANOVA-tabellen: 0.585 (2024-10), 0.764 (2025-01), 0.915 (2025-02).
 

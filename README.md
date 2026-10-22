@@ -23,7 +23,11 @@ dubbelsidigt. Kontrollera reglerna på omslaget till just din tenta.
 - ”Enkelt:”-förklaringar på vardagssvenska vid de svåraste begreppen.
 - Fler sant/falskt-påståenden.
 - Facit från tidigare tentor (2024-10-25, 2025-02-28) för att kontrollera räknartekniken.
-- Ingen R-kod; läsning av R-utskrifter (koefficient- och ANOVA-tabeller) finns kvar.
+- Ingen R-kod och inget om hur man kör R – tentan skrivs på papper utan dator. Kvar finns
+  bara det som alltid kommer: att *läsa* de utskrifter (koefficient- och ANOVA-tabeller) som
+  delas ut i tentan. §13 översätter kolumnnamnen (`Estimate`, `Std. Error`, `t value`,
+  `Pr(>|t|)`, `Residual standard error`, `Multiple/Adjusted R-squared`, `F-statistic`,
+  `Df`, `Sum Sq`, `Mean Sq`, `F value`, `Pr(>F)`, `Residuals`).
 
 ### Tillägg och finputs (V2.1)
 
